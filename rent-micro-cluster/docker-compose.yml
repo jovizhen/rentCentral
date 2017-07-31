@@ -1,0 +1,29 @@
+version: '3'
+services:
+  eureka-server:
+    image: eureka-server
+    ports:
+     - "8761:8761"
+  echo-service:
+    image: echo-service
+    depends_on:
+     - eureka-server
+   
+  zuul-server:
+    image: zuul-server
+    depends_on:
+     - eureka-server
+    ports:
+     - "9090:9090"
+  mysql:
+    container_name: flask_mysql
+    restart: always
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: '800312'
+      #MYSQL_USER: 'test'
+      #MYSQL_PASS: 'pass'
+    volumes:
+     - /home/jovi/mydata/mysql:/var/lib/mysql
+    ports:
+      - "3308:3306"
